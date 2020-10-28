@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:13-alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_volume:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=rdapi
+      - POSTGRES_DB=rdapi
+      - POSTGRES_PASSWORD=supersecret
+    networks:
+      - remoteday
+networks:
+  remoteday:
+    name: remoteday_network
+    driver: bridge
+volumes:
+  db_volume: {}
