@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common';
-import { ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Query, UseInterceptors } from '@nestjs/common';
+import { ApiNoContentResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { NotFoundInterceptor } from '../common/interceptors/not-found.interceptor';
+import { CreateTeamDTO } from './team.dto';
 import { Team } from './team.entity';
 import { TeamService } from './team.service';
 
@@ -27,6 +28,19 @@ export class TeamController {
     @UseInterceptors(NotFoundInterceptor)
     @ApiOkResponse({type: Team})
     findOne(@Param('id') id) {
-        return this.teamService.findOne(id);
+        return this.teamService.getOne(id);
+    }
+
+    @Post()
+    create(@Body() createDto: CreateTeamDTO) {
+        return this.teamService.create(createDto)
+    }
+
+    @Delete(':id')
+    @ApiParam({name: 'id'})
+    @ApiNoContentResponse()
+    @HttpCode(204)
+    delete(@Param('id') id) {
+        return this.teamService.delete(id);
     }
 }

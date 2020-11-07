@@ -17,9 +17,9 @@ export class Team {
 
   @Column({type: 'timestamptz', name: 'created_at'})
   @ApiProperty()
-  createdAt: string;
+  createdAt: Date;
 
   @Column({type: 'timestamptz', name: 'updated_at'})
   @ApiProperty()
-  updatedAt: string;
+  updatedAt: Date;
 }

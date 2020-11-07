@@ -5,6 +5,6 @@ export const TeamFactory = createFactory<Team>(faker => ({
     id: faker.random.number(),
     name: 'foo',
     status: 'active',
-    createdAt: '',
-    updatedAt: ''
+    createdAt: new Date(),
+    updatedAt: new Date()
 }));
