@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Query, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiNoContentResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { CreateTeamDTO } from './team.dto';
+import { CreateTeamDTO, UpdateTeamDTO } from './team.dto';
 import { Team } from './team.entity';
 import { TeamService } from './team.service';
 
@@ -11,8 +11,8 @@ export class TeamController {
     constructor(private readonly teamService: TeamService) {}
 
     @Get('')
-    @ApiQuery({name: 'page', type: 'number'})
-    @ApiQuery({name: 'limit', type: 'number'})
+    @ApiQuery({name: 'page', type: 'number', example: 1})
+    @ApiQuery({name: 'limit', type: 'number', example: 10})
     list(
         @Query('page') page = 1,
         @Query('limit') limit = 10,
@@ -32,6 +32,13 @@ export class TeamController {
     @Post()
     create(@Body() createDto: CreateTeamDTO) {
         return this.teamService.create(createDto)
+    }
+
+    @Put(':id')
+    @ApiParam({name: 'id'})
+    @ApiOkResponse({type: Team})
+    update(@Body() updateDto: UpdateTeamDTO, @Param('id') id) {
+        return this.teamService.updateOne(id, updateDto);
     }
 
     @Delete(':id')
