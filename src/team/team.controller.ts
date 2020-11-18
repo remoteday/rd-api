@@ -38,7 +38,7 @@ export class TeamController {
     @ApiParam({name: 'id'})
     @ApiOkResponse({type: Team})
     update(@Body() updateDto: UpdateTeamDTO, @Param('id') id) {
-        return this.teamService.updateOne(id, updateDto);
+        return this.teamService.update(id, updateDto);
     }
 
     @Delete(':id')

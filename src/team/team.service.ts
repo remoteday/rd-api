@@ -30,7 +30,7 @@ export class TeamService {
         return this.teamRepository.save({...payload, status: TeamStatus.ACTIVE})
     }
 
-    async updateOne(id: number, payload: UpdateTeamDTO) {
+    async update(id: number, payload: UpdateTeamDTO) {
        const data = await this.getOne(id);
        data.name = payload.name;
        data.updatedAt = new Date();
@@ -40,7 +40,7 @@ export class TeamService {
 
     async delete(id: number) {
       await this.getOne(id);
-      this.teamRepository.delete(id);
+      return this.teamRepository.delete(id);
     }
 
     protected async getOneOrFail(id: number): Promise<Team> {
