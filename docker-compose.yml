@@ -5,6 +5,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - db_volume:/var/lib/postgresql
     environment:
       - POSTGRES_USER=rdapi
