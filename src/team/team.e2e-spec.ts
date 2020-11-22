@@ -8,7 +8,6 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { TeamStatus } from './team.contant';
 import { TestUtils } from '../../test/test.utils';
 import { DatabaseModule } from '../database/database.module';
-import { TestLogger } from '../../test/test.logger';
 
 describe('TeamController (e2e)', () => {
   let app: INestApplication;
