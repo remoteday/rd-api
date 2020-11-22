@@ -13,7 +13,7 @@ import { Injectable } from "@nestjs/common"
  */
 @Injectable()
 export class TestUtils {
-  databaseService: DatabaseService
+  databaseService: DatabaseService;
 
   /**
    * Creates an instance of TestUtils
@@ -22,7 +22,7 @@ export class TestUtils {
     if (process.env.NODE_ENV !== "test") {
       throw new Error("ERROR-TEST-UTILS-ONLY-FOR-TESTS")
     }
-    this.databaseService = databaseService
+    this.databaseService = databaseService;
   }
 
   /**
@@ -30,8 +30,8 @@ export class TestUtils {
    * and close database connections
    */
   async shutdownServer(server) {
-    await server.httpServer.close()
-    await this.closeDbConnection()
+    await server.httpServer.close();
+    await this.closeDbConnection();
   }
 
   /**
@@ -45,23 +45,12 @@ export class TestUtils {
   }
 
   /**
-   * Returns the order id
-   * @param entityName The entity name of which you want to have the order from
-   */
-  getOrder(entityName) {
-    const order: string[] = JSON.parse(
-      fs.readFileSync(Path.join(__dirname, "../test/fixtures/_order.json"), "utf8")
-    )
-    return order.indexOf(entityName)
-  }
-
-  /**
    * Returns the entites of the database
    */
   async getEntities() {
     const entities = []
     ;(await (await this.databaseService.connection).entityMetadatas).forEach(x =>
-      entities.push({ name: x.name, tableName: x.tableName, order: this.getOrder(x.name) })
+      entities.push({ name: x.name, tableName: x.tableName})
     )
     return entities
   }
@@ -82,9 +71,7 @@ export class TestUtils {
     try {
       for (const entity of entities.sort((a, b) => b.order - a.order)) {
         const repository = await this.databaseService.getRepository(entity.name)
-        await repository.query(`DELETE FROM ${entity.tableName};`)
-        // Reset IDs
-        await repository.query(`DELETE FROM sqlite_sequence WHERE name='${entity.tableName}'`)
+        await repository.query(`DELETE FROM ${entity.tableName};`);
       }
     } catch (error) {
       throw new Error(`ERROR: Cleaning test db: ${error}`)
